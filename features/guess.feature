@@ -7,7 +7,7 @@ Feature: guess correct letter
 Scenario: guess correct letter that occurs once
 
   Given I start a new game with word "garply"
-  When I guess "r"
+  When I guess "r" 
   Then I should see "r" within "span.word"
 
 Scenario: guess correct letter that occurs multiple times
@@ -26,5 +26,6 @@ Scenario: multiple correct and incorrect guesses
 
   Given I start a new game with word "foobar"
   When I make the following guesses: a,z,x,o
-  Then the word should read "-oo-a-"
   And the wrong guesses should include: z,x
+  Then the word should read "-oo-a-"
+  

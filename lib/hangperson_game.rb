@@ -5,7 +5,6 @@ class HangpersonGame
   attr_accessor :word
   attr_accessor :guesses
   attr_accessor :wrong_guesses
-  attr_accessor :displayed
   # Get a word from remote "random word" service
   #game = HangpersonGame.new(self.get_random_word)
   # def initialize()
@@ -15,7 +14,6 @@ class HangpersonGame
     @word = word
     @guesses = ''
     @wrong_guesses = ''
-    @displayed = ''
   end
   
   def guess(letter)
@@ -24,37 +22,36 @@ class HangpersonGame
       if guesses.include? letter or wrong_guesses.include? letter 
         return false
       end
-      if word.count(letter) >= 1
+      if @word.include? letter
         @guesses = @guesses.concat(letter)
         return true
       else 
-        if wrong_guesses.count(letter) < 1
+        if !(@wrong_guesses.include? letter)
           @wrong_guesses = @wrong_guesses.concat(letter)
         end
         return false
       end
     else
-      raise ArgumentError
+      throw ArgumentError
     end
   end
-
   
   def word_with_guesses
-    wordList = word.split("")
-    wordList.each do |x|
-      if guesses.include? x 
-        @displayed = @displayed.concat(x)
+    displayed = ""
+    @word.each_char do |x|
+      if @guesses.include? x 
+        displayed = displayed.concat(x)
       else 
-        @displayed = @displayed.concat("-")
+        displayed = displayed.concat("-")
       end
    end
-   return @displayed
+   return displayed
   end
   
   def check_win_or_lose
-    if @wrong_guesses.length >= 7 and word_with_guesses != @word
+    if @wrong_guesses.length >= 7 #and word_with_guesses != @word
       return :lose
-    elsif @word == word_with_guesses
+    elsif @word == self.word_with_guesses # and @wrong_guesses.length <= 7
       return :win
     else
       return :play
